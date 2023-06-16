@@ -7,7 +7,7 @@ import time
 recognizer = sr.Recognizer()
 model_id = 'gpt-3.5-turbo-0613'
 
-with open('config.json') as f:
+with open('config/config.json') as f:
     config = json.load(f)
     openai.api_key = config['api_key']  # insert your API Key here
     language = config['language']       # Format: en-EN, en-US...
@@ -46,21 +46,24 @@ X: Exit""")
         operation = input("=> ")
         prompt = None
         if(operation == "1"):
-            with sr.Microphone() as source:
-                print("Say something...")
-                audio = recognizer.listen(source)
+            while True:
+                with sr.Microphone() as source:
+                    print("Say something...")
+                    audio = recognizer.listen(source)
 
-            try:
-                prompt = recognizer.recognize_google(audio,language=language)
-                print("You:", prompt)
-                conversation.append({'role': 'user', 'content': prompt})
-                
-            except sr.UnknownValueError:
-                print("Google Speech Recognition could not understand audio")
+                try:
+                    prompt = recognizer.recognize_google(audio,language=language)
+                    if(prompt == 'x' or prompt == "X"):
+                        break
+                    print("You:", prompt)
+                    conversation.append({'role': 'user', 'content': prompt})
+                    
+                except sr.UnknownValueError:
+                    print("Google Speech Recognition could not understand audio")
 
-            conversation = chat_gpt_conversation(conversation)
-            print('{0}: {1}\n'.format(conversation[-1]['role'].strip().capitalize(), conversation[-1]['content'].strip()))
-            text_to_speech(conversation[-1]['content'].strip(),language)
+                conversation = chat_gpt_conversation(conversation)
+                print('{0}: {1}\n'.format(conversation[-1]['role'].strip().capitalize(), conversation[-1]['content'].strip()))
+                text_to_speech(conversation[-1]['content'].strip(),language)
 
         elif(operation == "2"):
             while True:
