@@ -38,7 +38,8 @@ def text_to_speech(text,language):
 
 def main():
     conversation = [{'role': 'system', 'content': 'How may I help you?'}]
-    while True:
+    operation = None
+    while operation != "x" and operation != "X":
         print("""Please choose your preferred input method.
 1: Use your own voice and convert speech to text
 2: Input text directly from the keyboard
@@ -74,7 +75,6 @@ X: Exit""")
                 conversation = chat_gpt_conversation(conversation)
                 print('{0}: {1}\n'.format(conversation[-1]['role'].strip().capitalize(), conversation[-1]['content'].strip()))
                 text_to_speech(conversation[-1]['content'].strip(),language)
-        elif(operation == "x" or operation == "X"):
-            break
+        
 if __name__ == "__main__":
     main()
