@@ -5,12 +5,13 @@ import json
 import time
 
 recognizer = sr.Recognizer()
-model_id = 'gpt-3.5-turbo-0613'
+global model_id
 
 with open('config/config.json') as f:
     config = json.load(f)
     openai.api_key = config['api_key']  # insert your API Key here
     language = config['language']       # Format: en-EN, en-US...
+    model_id = config['model']
 
 def chat_gpt_conversation(conversation):
     try:
