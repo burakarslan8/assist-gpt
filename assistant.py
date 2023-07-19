@@ -61,6 +61,8 @@ X: Exit""")
                     
                 except sr.UnknownValueError:
                     print("Google Speech Recognition could not understand audio")
+                except sr.RequestError as e:
+                    print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
                 conversation = chat_gpt_conversation(conversation)
                 print('{0}: {1}\n'.format(conversation[-1]['role'].strip().capitalize(), conversation[-1]['content'].strip()))
